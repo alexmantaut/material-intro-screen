@@ -1,6 +1,5 @@
 package agency.tango.materialintroscreen.fragments;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
@@ -24,6 +23,8 @@ public class SlideFragment extends SlideFragmentBase {
     public static final String TITLE_STYLE = "title_style";
     public static final String DESCRIPTION = "description";
     public static final String DESCRIPTION_STYLE = "description_style";
+    public static final String MESSAGE_BUTTON_TEXT_STYLE = "message_button_text_style";
+    public static final String MESSAGE_BUTTON_BACKGROUND = "message_button_background";
     public static final String NEEDED_PERMISSIONS = "needed_permission";
     public static final String POSSIBLE_PERMISSIONS = "possible_permission";
     public static final String IMAGE = "image";
@@ -33,6 +34,12 @@ public class SlideFragment extends SlideFragmentBase {
 
     @StyleRes
     private int descriptionStyle;
+
+    @StyleRes
+    private int messageButtonTextStyle;
+
+    @DrawableRes
+    private int messageButtonBackground;
 
     @ColorRes
     private int backgroundColor;
@@ -83,6 +90,18 @@ public class SlideFragment extends SlideFragmentBase {
     }
 
     @Override
+    @StyleRes
+    public int messageButtonTextStyle() {
+        return messageButtonTextStyle;
+    }
+
+    @Override
+    @DrawableRes
+    public int messageButtonBackground() {
+        return messageButtonBackground;
+    }
+
+    @Override
     public String[] possiblePermissions() {
         return possiblePermissions;
     }
@@ -111,6 +130,8 @@ public class SlideFragment extends SlideFragmentBase {
         titleStyle = bundle.getInt(TITLE_STYLE,0);
         description = bundle.getString(DESCRIPTION);
         descriptionStyle = bundle.getInt(DESCRIPTION_STYLE,0);
+        messageButtonTextStyle = bundle.getInt(MESSAGE_BUTTON_TEXT_STYLE,0);
+        messageButtonBackground = bundle.getInt(MESSAGE_BUTTON_BACKGROUND,0);
         neededPermissions = bundle.getStringArray(NEEDED_PERMISSIONS);
         possiblePermissions = bundle.getStringArray(POSSIBLE_PERMISSIONS);
 

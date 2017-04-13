@@ -10,6 +10,8 @@ import static agency.tango.materialintroscreen.fragments.SlideFragment.BUTTONS_C
 import static agency.tango.materialintroscreen.fragments.SlideFragment.DESCRIPTION;
 import static agency.tango.materialintroscreen.fragments.SlideFragment.DESCRIPTION_STYLE;
 import static agency.tango.materialintroscreen.fragments.SlideFragment.IMAGE;
+import static agency.tango.materialintroscreen.fragments.SlideFragment.MESSAGE_BUTTON_BACKGROUND;
+import static agency.tango.materialintroscreen.fragments.SlideFragment.MESSAGE_BUTTON_TEXT_STYLE;
 import static agency.tango.materialintroscreen.fragments.SlideFragment.NEEDED_PERMISSIONS;
 import static agency.tango.materialintroscreen.fragments.SlideFragment.POSSIBLE_PERMISSIONS;
 import static agency.tango.materialintroscreen.fragments.SlideFragment.TITLE;
@@ -32,6 +34,12 @@ public class SlideFragmentBuilder {
 
     @StyleRes
     private int descriptionStyle;
+
+    @StyleRes
+    private int messageButtonTextStyle;
+
+    @DrawableRes
+    private int messageButtonBackground;
 
     private String title;
     private String description;
@@ -65,6 +73,16 @@ public class SlideFragmentBuilder {
 
     public SlideFragmentBuilder descriptionStyle(@StyleRes int descriptionStyle) {
         this.descriptionStyle = descriptionStyle;
+        return this;
+    }
+
+    public SlideFragmentBuilder messageButtonTextStyle(@StyleRes int messageButtonTextStyle) {
+        this.messageButtonTextStyle = messageButtonTextStyle;
+        return this;
+    }
+
+    public SlideFragmentBuilder messageButtonBackground(@DrawableRes int messageButtonBackground) {
+        this.messageButtonBackground = messageButtonBackground;
         return this;
     }
 
@@ -104,6 +122,8 @@ public class SlideFragmentBuilder {
         bundle.putInt(TITLE_STYLE, titleStyle);
         bundle.putString(DESCRIPTION, description);
         bundle.putInt(DESCRIPTION_STYLE, descriptionStyle);
+        bundle.putInt(MESSAGE_BUTTON_TEXT_STYLE, messageButtonTextStyle);
+        bundle.putInt(MESSAGE_BUTTON_BACKGROUND, messageButtonBackground);
         bundle.putStringArray(NEEDED_PERMISSIONS, neededPermissions);
         bundle.putStringArray(POSSIBLE_PERMISSIONS, possiblePermissions);
 

@@ -2,17 +2,21 @@ package agency.tango.materialintroscreen;
 
 import android.animation.ArgbEvaluator;
 import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
 import android.view.KeyEvent;
@@ -54,6 +58,7 @@ public abstract class MaterialIntroActivity extends AppCompatActivity {
     private ImageButton nextButton;
     private CoordinatorLayout coordinatorLayout;
     private Button messageButton;
+    private Drawable messageButtonDefaultBackground;
     private LinearLayout navigationView;
     private OverScrollViewPager overScrollLayout;
 
@@ -92,6 +97,7 @@ public abstract class MaterialIntroActivity extends AppCompatActivity {
         nextButton = (ImageButton) findViewById(R.id.button_next);
         skipButton = (ImageButton) findViewById(R.id.button_skip);
         messageButton = (Button) findViewById(R.id.button_message);
+        messageButtonDefaultBackground = messageButton.getBackground();
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator_layout_slide);
         navigationView = (LinearLayout) findViewById(R.id.navigation_view);
 
@@ -451,6 +457,16 @@ public abstract class MaterialIntroActivity extends AppCompatActivity {
         return getColorFromRes(adapter.getItem(position).backgroundColor());
     }
 
+    @StyleRes
+    private int getMessageButtonTextStyle(int position) {
+        return adapter.getItem(position).messageButtonTextStyle();
+    }
+
+    @DrawableRes
+    private int getMessageButtonBackground(int position) {
+        return adapter.getItem(position).messageButtonBackground();
+    }
+
     private class ColorTransitionScrollListener implements IPageScrolledListener {
 
         @Override
@@ -459,7 +475,22 @@ public abstract class MaterialIntroActivity extends AppCompatActivity {
                 setViewsColor(position, offset);
             } else if (adapter.getCount() == 1 || isOnLastSlide(position, offset)) {
                 viewPager.setBackgroundColor(getBackgroundColor(position));
-                messageButton.setTextColor(getBackgroundColor(position));
+
+                int messageButtonTextStyle = getMessageButtonTextStyle(position);
+                int messageButtonBackground = getMessageButtonBackground(position);
+
+                if(messageButtonTextStyle != 0) {
+                    TextViewCompat.setTextAppearance(messageButton, messageButtonTextStyle);
+                }else{
+                    messageButton.setTextColor(getBackgroundColor(position));
+                }
+
+                if(messageButtonBackground != 0) {
+                    messageButton.setBackgroundResource(messageButtonBackground);
+                }else{
+                    resetMessageButtonBackground();
+                }
+
                 pageIndicator.setPageIndicatorColor(getButtonsColor(position));
 
                 tintButtons(ColorStateList.valueOf(getButtonsColor(position)));
@@ -468,8 +499,22 @@ public abstract class MaterialIntroActivity extends AppCompatActivity {
 
         private void setViewsColor(int position, float offset) {
             int backgroundColor = getBackgroundEvaluatedColor(position, offset);
+            int messageButtonTextStyle = getMessageButtonTextStyle(position);
+            int messageButtonBackground = getMessageButtonBackground(position);
+
             viewPager.setBackgroundColor(backgroundColor);
-            messageButton.setTextColor(backgroundColor);
+
+            if(messageButtonTextStyle != 0) {
+                TextViewCompat.setTextAppearance(messageButton, messageButtonTextStyle);
+            }else{
+                messageButton.setTextColor(backgroundColor);
+            }
+
+            if(messageButtonBackground != 0) {
+                messageButton.setBackgroundResource(messageButtonBackground);
+            }else{
+                resetMessageButtonBackground();
+            }
 
             int buttonsColor = getButtonsEvaluatedColor(position, offset);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -488,6 +533,14 @@ public abstract class MaterialIntroActivity extends AppCompatActivity {
             ViewCompat.setBackgroundTintList(nextButton, color);
             ViewCompat.setBackgroundTintList(backButton, color);
             ViewCompat.setBackgroundTintList(skipButton, color);
+        }
+
+        private void resetMessageButtonBackground() {
+            if(Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                messageButton.setBackgroundDrawable(messageButtonDefaultBackground);
+            } else {
+                messageButton.setBackground(messageButtonDefaultBackground);
+            }
         }
     }
 

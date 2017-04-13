@@ -2,6 +2,8 @@ package agency.tango.materialintroscreen.fragments;
 
 import android.content.pm.PackageManager;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.StyleRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
@@ -24,6 +26,16 @@ public class SlideFragmentBase extends ParallaxFragment {
     @ColorRes
     public int buttonsColor() {
         return R.color.mis_default_buttons_color;
+    }
+
+    @StyleRes
+    public int messageButtonTextStyle() {
+        return 0;
+    }
+
+    @DrawableRes
+    public int messageButtonBackground() {
+        return 0;
     }
 
     public boolean canMoveFurther() {
